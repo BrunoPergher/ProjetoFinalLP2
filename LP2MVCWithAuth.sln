@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LP2MVCWithAuth", "LP2MVCWithAuth\LP2MVCWithAuth.csproj", "{FFA98CCE-3662-432C-AB61-82FBF140A861}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFA98CCE-3662-432C-AB61-82FBF140A861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFA98CCE-3662-432C-AB61-82FBF140A861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFA98CCE-3662-432C-AB61-82FBF140A861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFA98CCE-3662-432C-AB61-82FBF140A861}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA48606E-2F18-4FBA-B7EC-E6D4219CCD84}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,77 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Globalization
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model LP2MVCWithAuth.Models.ListaTarefas
+@{
+    ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="app.css" type="text/css" />
+
+<div class="container">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div>
+            <form asp-controller="Home" asp-action="Index" method="post">
+                <h2>Criar uma nova tarefa.</h2>
+                <hr />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-floating">
+                    <input asp-for="Titulo" class="form-control" aria-required="true" />
+                    <label asp-for="Titulo"></label>
+                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating">
+                    <input asp-for="Descricao" class="form-control" aria-required="true" />
+                    <label asp-for="Descricao"></label>
+                    <span asp-validation-for="Descricao" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating">
+                    <input class="form-control" asp-for="DataEntrega" />
+                </div>
+
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            </form>
+        </div>
+
+        <br />
+        <br />
+        <br />
+
+        @if (Model.Tarefas.Count() > 0)
+        {
+            <div class="table-wrapper-scroll-y my-custom-scrollbar scrollTable" style="overflow:auto">
+                <table class="table table-dark table-bordered table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Tarefas)
+                        {
+                            <tr>
+                                <th scope="row">@item.Id</th>
+                                <td>@item.Titulo</td>
+                                <td>@item.Descricao</td>
+                                <td>@item.DataEntrega.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+    else
+    {
+        <div>
+            Faça Login Para ter acesso ao site
+        </div>
+    }
+</div>
