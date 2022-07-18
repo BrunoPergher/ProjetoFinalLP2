@@ -1,0 +1,92 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Globalization
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model LP2MVCWithAuth.Models.ListaTarefas
+@{
+    ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="app.css" type="text/css" />
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrx8uPsxl7Xq4bxSZBS0xYBVfa-Mps79M"></script>
+<script src="https://unpkg.com/location-picker/dist/location-picker.min.js"></script>
+<style type="text/css">
+    #map {
+        width: 100%;
+        height: 480px;
+    }
+</style>
+
+<div class="container">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div>
+            <form asp-controller="Tarefas" asp-action="Edit" method="post">
+                <h2>Editar tarefa @Model.Id</h2>
+                <hr />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-floating">
+                    <input asp-for="Titulo" class="form-control" aria-required="true" />
+                    <label asp-for="Titulo"></label>
+                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                </div>
+                <br>
+                <div class="form-floating">
+                    <input asp-for="Descricao" class="form-control" aria-required="true" />
+                    <label asp-for="Descricao"></label>
+                    <span asp-validation-for="Descricao" class="text-danger"></span>
+                </div>
+                <br>
+                <div class="form-floating">
+                    <input class="form-control" asp-for="DataEntrega" />
+                </div>
+                <br>
+                <input asp-for="Id" value="@Model.Id" hidden />
+
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Editar</button>
+            </form>
+
+            <br>
+            @if (Model.Locations != null && Model.Locations.Count() > 0)
+            {
+                <table class="table table-dark table-bordered table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Latitude</th>
+                            <th scope="col">Longitude</th>
+                            <th scope="col">Ponto de partida ?</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.PontoDePartida != null)
+                        {
+                            <tr>
+                                <th scope="row">@Model.PontoDePartida.Id</th>
+                                <td>@Model.PontoDePartida.Latitude</td>
+                                <td>@Model.PontoDePartida.Longitude</td>
+                                <td>Sim</td>
+                                <td> <a asp-controller="Tarefas" asp-action="DeleteLocation" asp-route-id="@Model.PontoDePartida.Id"> Excluir</a>  </td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.Locations)
+                        {
+                            <tr>
+                                <th scope="row">@item.Id</th>
+                                <td>@item.Latitude</td>
+                                <td>@item.Longitude</td>
+                                <td>Não</td>
+                                <td> <a asp-controller="Tarefas" asp-action="DeleteLocation" asp-route-id="@item.Id"> Excluir</a>  </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <br />
+        <br />
+        <br />
+    }
+</div>

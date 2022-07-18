@@ -11,7 +11,8 @@ namespace LP2MVCWithAuth.Data
         {
         }
 
-        public DbSet<ListaTarefas> ListaDeTarefas { get; set; }
+        public DbSet<Tarefa> ListaDeTarefas { get; set; }
 
+        public DbSet<Location> Location { get; set; }
     }
 }

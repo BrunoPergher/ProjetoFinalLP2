@@ -1,0 +1,131 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Globalization
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model LP2MVCWithAuth.Models.ListaTarefas
+@{
+    ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="app.css" type="text/css" />
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrx8uPsxl7Xq4bxSZBS0xYBVfa-Mps79M"></script>
+<script src="https://unpkg.com/location-picker/dist/location-picker.min.js"></script>
+<style type="text/css">
+    .map {
+        width: 100%;
+        height: 480px;
+    }
+</style>
+
+<div class="container">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <h2>Criar uma nova tarefa.</h2>
+        <hr />
+
+        <div>
+            <h3>Posição de partida:</h3>
+            <div id="mapInitial" class="map"></div>
+            <br>
+            <button id="confirmPositionInitial">Confirm Position</button>
+            <br>
+        </div>
+
+        <br />
+
+        <div>
+            <h3>Ponto de encontros:</h3>
+            <div id="map" class="map"></div>
+            <br>
+            <button id="confirmPosition">Confirm Position</button>
+            <button id="saveLocations">Salvar Posições</button>
+            <br>
+        </div>
+
+        <br />
+
+        <div>
+            <form asp-controller="Tarefas" asp-action="Add" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-floating">
+                    <input asp-for="Titulo" class="form-control" aria-required="true" />
+                    <label asp-for="Titulo"></label>
+                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                </div>
+                <br>
+                <div class="form-floating">
+                    <input asp-for="Descricao" class="form-control" aria-required="true" />
+                    <label asp-for="Descricao"></label>
+                    <span asp-validation-for="Descricao" class="text-danger"></span>
+                </div>
+                <br>
+                <div class="form-floating">
+                    <input class="form-control" asp-for="DataEntrega" />
+                </div>
+                <br>
+                <input id="PartidaLatitude" asp-for="PontoDePartida.Latitude" hidden />
+                <input id="PartidaLongitude" asp-for="PontoDePartida.Longitude" hidden />
+                <input id="Locations" asp-for="Locations" hidden />
+
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            </form>
+        </div>
+
+        <br />
+
+        <script>
+            // Get element references
+            var locations = [];
+            var confirmBtnInitial = document.getElementById('confirmPositionInitial');
+            var confirmBtn = document.getElementById('confirmPosition');
+            var saveLocations = document.getElementById('saveLocations');
+
+            // Initialize locationPicker plugin
+            var lpInitial = new locationPicker('mapInitial', {
+                setCurrentPosition: true, // You can omit this, defaults to true
+            }, {
+                zoom: 15 // You can set any google map options here, zoom defaults to 15
+            });
+
+            var lp = new locationPicker('map', {
+                setCurrentPosition: true, // You can omit this, defaults to true
+            }, {
+                zoom: 15 // You can set any google map options here, zoom defaults to 15
+            });
+
+            // Listen to button onclick event
+            confirmBtn.onclick = function() {
+                // Get current location and show it in HTML
+                var location = lpInitial.getMarkerPosition();
+                document.getElementById("PartidaLatitude").value = location.lat;
+                document.getElementById("PartidaLongitude").value = location.lng;
+            };
+
+            saveLocations.onclick = function() {
+                document.getElementById("Locations").value = locations;
+            }
+
+            confirmBtnInitial.onclick = function() {
+                // Get current location and show it in HTML
+                var location = lp.getMarkerPosition();
+                let locationModel = {
+                    "Longitude": location.lat,
+                    "Longitude": location.lng,
+                }
+
+                locations.push(locationModel);
+            };
+
+            // Listen to map idle event, listening to idle event more accurate than listening to ondrag event
+            google.maps.event.addListener(lp.mapInitial, 'idle', function(event) {
+                // Get current location and show it in HTML
+                var location = lp.getMarkerPosition();
+            });
+
+            google.maps.event.addListener(lp.map, 'idle', function(event) {
+                // Get current location and show it in HTML
+                var location = lp.getMarkerPosition();
+            });
+        </script>
+    }
+</div>

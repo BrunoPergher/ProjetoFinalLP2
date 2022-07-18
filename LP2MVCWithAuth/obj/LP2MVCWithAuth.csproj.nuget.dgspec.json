@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\bruno\\source\\repos\\LP2MVCWithAuth\\LP2MVCWithAuth\\LP2MVCWithAuth.csproj": {}
+    "C:\\Users\\bruno\\Documents\\SimpleMVCWebSite\\LP2MVCWithAuth\\LP2MVCWithAuth.csproj": {}
   },
   "projects": {
-    "C:\\Users\\bruno\\source\\repos\\LP2MVCWithAuth\\LP2MVCWithAuth\\LP2MVCWithAuth.csproj": {
+    "C:\\Users\\bruno\\Documents\\SimpleMVCWebSite\\LP2MVCWithAuth\\LP2MVCWithAuth.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bruno\\source\\repos\\LP2MVCWithAuth\\LP2MVCWithAuth\\LP2MVCWithAuth.csproj",
+        "projectUniqueName": "C:\\Users\\bruno\\Documents\\SimpleMVCWebSite\\LP2MVCWithAuth\\LP2MVCWithAuth.csproj",
         "projectName": "LP2MVCWithAuth",
-        "projectPath": "C:\\Users\\bruno\\source\\repos\\LP2MVCWithAuth\\LP2MVCWithAuth\\LP2MVCWithAuth.csproj",
+        "projectPath": "C:\\Users\\bruno\\Documents\\SimpleMVCWebSite\\LP2MVCWithAuth\\LP2MVCWithAuth.csproj",
         "packagesPath": "C:\\Users\\bruno\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bruno\\source\\repos\\LP2MVCWithAuth\\LP2MVCWithAuth\\obj\\",
+        "outputPath": "C:\\Users\\bruno\\Documents\\SimpleMVCWebSite\\LP2MVCWithAuth\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\bruno\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -46,19 +46,25 @@
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[6.0.6, )"
+              "version": "[6.0.7, )"
             },
             "Microsoft.AspNetCore.Identity.UI": {
               "target": "Package",
-              "version": "[6.0.6, )"
+              "version": "[6.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[6.0.6, )"
+              "version": "[6.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.6, )"
+              "version": "[6.0.7, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[6.0.7, )"
             }
           },
           "imports": [

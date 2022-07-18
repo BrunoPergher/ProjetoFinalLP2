@@ -26,5 +26,9 @@ namespace LP2MVCWithAuth.Models
         public DateTime DataEntrega { get; set; }
 
         public List<ListaTarefas> Tarefas { get; set; }
+
+        public Location PontoDePartida { get; set; }
+
+        public List<Location> Locations { get; set; }
     }
 }
