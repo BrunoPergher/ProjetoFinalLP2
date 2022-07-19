@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Globalization
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model LP2MVCWithAuth.Models.ListaTarefas
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    /* Set the size of the div element that contains the map */
+    #map {
+        height: 400px;
+        width: 600px;
+    }
+</style>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!--The div elements for the map and message -->
+<div id="map"></div>
+<script>
+    // Initialize and add the map
+    var map;
+    function initMap() {
+        // The map, centered on Central Park
+        const center = { lat: 40.774102, lng: -73.971734 };
+        const options = { zoom: 15, scaleControl: true, center: center };
+        map = new google.maps.Map(
+            document.getElementById('map'), options);
+    }
+</script>
+<!--Load the API from the specified URL -- remember to replace YOUR_API_KEY-->
+<script>
+    // latitude/longitude
+    /*
+    Coordinates: If you pass latitude/longitude coordinates,
+    they they will snap to the nearest road. Passing a place ID is preferred.
+    If you do pass coordinates, ensure that no space exists between the latitude and longitude values.
+    */
+    // 40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626
+    var pontoPartida = "";
+    var locations = "";
+    //var config = {
+    //    method: 'get',
+    //    url: 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + pontoPartida + "&destinations=" + locations + "&key=AIzaSyBrx8uPsxl7Xq4bxSZBS0xYBVfa",
+    //    headers: {}
+    //};
+
+    var config = {
+        method: 'get',
+        url: 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=40.6655101%2C-73.89188969999998&destinations=40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626&key=AIzaSyBrx8uPsxl7Xq4bxSZBS0xYBVfa',
+        headers: {}
+    };
+
+    axios(config)
+        .then(function(response) {
+            console.log(JSON.stringify(response.data));
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+</script>

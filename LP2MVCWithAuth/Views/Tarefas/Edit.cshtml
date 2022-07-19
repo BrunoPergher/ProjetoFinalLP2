@@ -10,6 +10,7 @@
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrx8uPsxl7Xq4bxSZBS0xYBVfa-Mps79M"></script>
 <script src="https://unpkg.com/location-picker/dist/location-picker.min.js"></script>
+<script src="jquery-3.6.0.min.js"></script>
 <style type="text/css">
     #map {
         width: 100%;
@@ -48,29 +49,41 @@
             </form>
 
             <br>
-            @if (Model.Locations != null && Model.Locations.Count() > 0)
-            {
-                <table class="table table-dark table-bordered table-striped mb-0">
-                    <thead>
+
+            <table class="table table-dark table-bordered table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Latitude</th>
+                        <th scope="col">Longitude</th>
+                        <th scope="col">Ponto de partida ?</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <a asp-controller="Tarefas" asp-action="AddLocationByTarefa" asp-route-id="@Model.Id" class="btn btn-primary btn-lg">Adicionar Localização</a>
+
+                    @if (Model.PontoDePartida != null)
+                    {
                         <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Latitude</th>
-                            <th scope="col">Longitude</th>
-                            <th scope="col">Ponto de partida ?</th>
-                            <th scope="col"></th>
+                            <th scope="row">@Model.PontoDePartida.Id</th>
+                            <td>@Model.PontoDePartida.Latitude</td>
+                            <td>@Model.PontoDePartida.Longitude</td>
+                            <td>Sim</td>
+                            <td>
+                                <a asp-controller="Tarefas" asp-action="EditLocation" asp-route-id="@Model.PontoDePartida.Id" class="btn btn-primary btn-lg">Editar</a>
+                            </td>
+                            <td>
+                                <form asp-controller="Tarefas" asp-action="DeleteLocation" asp-route-locationId="@Model.PontoDePartida.Id">
+                                    <button type="submit" class="btn btn-primary btn-lg btn-danger">Excluir</button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.PontoDePartida != null)
-                        {
-                            <tr>
-                                <th scope="row">@Model.PontoDePartida.Id</th>
-                                <td>@Model.PontoDePartida.Latitude</td>
-                                <td>@Model.PontoDePartida.Longitude</td>
-                                <td>Sim</td>
-                                <td> <a asp-controller="Tarefas" asp-action="DeleteLocation" asp-route-id="@Model.PontoDePartida.Id"> Excluir</a>  </td>
-                            </tr>
-                        }
+                    }
+
+                    @if (Model.Locations != null && Model.Locations.Count() > 0)
+                    {
                         @foreach (var item in Model.Locations)
                         {
                             <tr>
@@ -78,15 +91,38 @@
                                 <td>@item.Latitude</td>
                                 <td>@item.Longitude</td>
                                 <td>Não</td>
-                                <td> <a asp-controller="Tarefas" asp-action="DeleteLocation" asp-route-id="@item.Id"> Excluir</a>  </td>
+                                <td>
+                                    <a asp-controller="Tarefas" asp-action="EditLocation" asp-route-id="@item.Id" class="btn btn-primary btn-lg">Editar</a>
+                                </td>
+
+                                <td>
+                                    <form asp-controller="Tarefas" asp-action="DeleteLocation" asp-route-locationId="@item.Id">
+                                        <button type="submit" class="btn btn-primary btn-lg btn-danger">Excluir</button>
+                                    </form>
+                                </td>
                             </tr>
                         }
+                    }
                     </tbody>
                 </table>
-            }
         </div>
         <br />
         <br />
         <br />
     }
 </div>
+<script>
+    //function addToCart() {
+    //    console.log("teste");
+    //    var button = document.getElementById('button');
+    //    var id = document.getElementById('idToDelete').value;
+    //    console.log(id);
+
+
+    //    function addToCart(id) {
+    //        $.post('@Url.Action("Add","Cart")', { id: id } function(data) {
+    //            //do whatever with the result.
+    //        });
+    //    }
+    //}
+</script>

@@ -6,120 +6,30 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<link rel="stylesheet" href="app.css" type="text/css" />
-<script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrx8uPsxl7Xq4bxSZBS0xYBVfa-Mps79M"></script>
-<script src="https://unpkg.com/location-picker/dist/location-picker.min.js"></script>
-<style type="text/css">
-    #map {
-        width: 100%;
-        height: 480px;
-    }
-</style>
 
 <div class="container">
     @if (SignInManager.IsSignedIn(User))
     {
-        @*<div>
-            <form asp-controller="Home" asp-action="Index" method="post">
-                <h2>Criar uma nova tarefa.</h2>
-                <hr />
-
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-floating">
-                    <input asp-for="Titulo" class="form-control" aria-required="true" />
-                    <label asp-for="Titulo"></label>
-                    <span asp-validation-for="Titulo" class="text-danger"></span>
-                </div>
-
-                <div class="form-floating">
-                    <input asp-for="Descricao" class="form-control" aria-required="true" />
-                    <label asp-for="Descricao"></label>
-                    <span asp-validation-for="Descricao" class="text-danger"></span>
-                </div>
-
-                <div class="form-floating">
-                    <input class="form-control" asp-for="DataEntrega" />
-                </div>
-
-                <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-            </form>
-        </div>*@
-
-        <a asp-controller="Tarefas" asp-action="Add">Criar nova tarefa</a>
+        <h2>
+            <a asp-controller="Tarefas" asp-action="Add">Criar nova tarefa</a>
+        </h2>
         <br />
-        <a asp-controller="Tarefas" asp-action="Index">Minhas tarefas</a>
+        <h2>
+            <a asp-controller="Tarefas" asp-action="Index">Minhas tarefas</a>
+        </h2>
+
 
         <br />
         <br />
         <br />
-
-        @if (Model.Tarefas.Count() > 0)
-        {
-            <div class="table-wrapper-scroll-y my-custom-scrollbar scrollTable" style="overflow:auto">
-                <table class="table table-dark table-bordered table-striped mb-0">
-                    <thead>
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Titulo</th>
-                            <th scope="col">Descrição</th>
-                            <th scope="col">Data</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Tarefas)
-                        {
-                            <tr>
-                                <th scope="row">@item.Id</th>
-                                <td>@item.Titulo</td>
-                                <td>@item.Descricao</td>
-                                <td>@item.DataEntrega.ToString("dd/MM/yyyy HH:mm:ss")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
     }
     else
     {
         <div>
-            Faça Login Para ter acesso ao site
+            <h2>
+                Faça Login Para ter acesso ao site
+            </h2>
         </div>
     }
-
-    <div id="map"></div>
-    <br>
-    <button id="confirmPosition">Confirm Position</button>
-    <br>
-    <p>On idle position: <span id="onIdlePositionView"></span></p>
-    <p>On click position: <span id="onClickPositionView"></span></p>
-    <script>
-        // Get element references
-        var confirmBtn = document.getElementById('confirmPosition');
-        var onClickPositionView = document.getElementById('onClickPositionView');
-        var onIdlePositionView = document.getElementById('onIdlePositionView');
-
-        // Initialize locationPicker plugin
-        var lp = new locationPicker('map', {
-            setCurrentPosition: true, // You can omit this, defaults to true
-        }, {
-            zoom: 15 // You can set any google map options here, zoom defaults to 15
-        });
-
-        // Listen to button onclick event
-        confirmBtn.onclick = function() {
-            // Get current location and show it in HTML
-            var location = lp.getMarkerPosition();
-            onClickPositionView.innerHTML = 'The chosen location is ' + location.lat + ',' + location.lng;
-        };
-
-        // Listen to map idle event, listening to idle event more accurate than listening to ondrag event
-        google.maps.event.addListener(lp.map, 'idle', function(event) {
-            // Get current location and show it in HTML
-            var location = lp.getMarkerPosition();
-            onIdlePositionView.innerHTML = 'The chosen location is ' + location.lat + ',' + location.lng;
-        });
-    </script>
 </div>
 

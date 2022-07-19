@@ -195,12 +195,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWZhc1xBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bruno/Documents/SimpleMVCWebSite/LP2MVCWithAuth/Views/Tarefas/AddLocationByTarefa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWZhc1xBZGRMb2NhdGlvbkJ5VGFyZWZhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bruno/Documents/SimpleMVCWebSite/LP2MVCWithAuth/Views/Tarefas/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWZhc1xFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/bruno/Documents/SimpleMVCWebSite/LP2MVCWithAuth/Views/Tarefas/EditLocation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWZhc1xFZGl0TG9jYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/bruno/Documents/SimpleMVCWebSite/LP2MVCWithAuth/Views/Tarefas/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWZhc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/bruno/Documents/SimpleMVCWebSite/LP2MVCWithAuth/Views/Tarefas/Rotas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZWZhc1xSb3Rhcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/bruno/Documents/SimpleMVCWebSite/LP2MVCWithAuth/Views/_ViewImports.cshtml]

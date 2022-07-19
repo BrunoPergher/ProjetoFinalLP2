@@ -84,19 +84,27 @@ namespace LP2MVCWithAuth.Controllers
                 IdTarefa = tarefaCriada.Id,
             };
 
-            foreach (var item in listaTarefas.Locations)
+            _database.Location.Add(location);
+            _database.SaveChanges();
+
+            if (listaTarefas.Locations != null)
             {
-                location = new Data.Models.Location
+                foreach (var item in listaTarefas.Locations)
                 {
-                    Latitude = listaTarefas.PontoDePartida.Latitude,
-                    Longitude = listaTarefas.PontoDePartida.Longitude,
-                    IsInitical = false,
-                    IdTarefa = tarefaCriada.Id,
-                };
+                    location = new Data.Models.Location
+                    {
+                        Latitude = listaTarefas.PontoDePartida.Latitude,
+                        Longitude = listaTarefas.PontoDePartida.Longitude,
+                        IsInitical = false,
+                        IdTarefa = tarefaCriada.Id,
+                    };
+
+                    _database.Location.Add(location);
+                    _database.SaveChanges();
+                }
             }
-
+            
             var tarefas = _database.ListaDeTarefas.ToList().Where(x => x.DataEntrega > DateTime.UtcNow).OrderBy(x => x.DataEntrega);
-
             if (tarefas.Count() > 0)
             {
                 foreach (var item in tarefas)
@@ -117,6 +125,29 @@ namespace LP2MVCWithAuth.Controllers
         }
 
         [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var tarefa = _database.ListaDeTarefas.Where(x => x.Id == id).FirstOrDefault();
+            if (tarefa != null)
+            {
+                _database.ListaDeTarefas.Remove(tarefa);
+
+                var locationsByTarefa = _database.Location.Where(x => x.IdTarefa == tarefa.Id).ToList();
+                if (locationsByTarefa.Count() > 0)
+                {
+                    foreach (var item in locationsByTarefa)
+                    {
+                        _database.Location.Remove(item);
+                    }
+                }
+
+                _database.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             var tarefa = _database.ListaDeTarefas.FirstOrDefault(x => x.Id == id);
@@ -131,7 +162,8 @@ namespace LP2MVCWithAuth.Controllers
                     Id = tarefa.Id,
                 };
 
-                var startLocation = _database.Location.Where(x => x.IsInitical == true).FirstOrDefault();
+                var locationsModel = new List<Models.Location>();
+                var startLocation = _database.Location.Where(x => x.IsInitical == true && x.IdTarefa == tarefa.Id).FirstOrDefault();
                 if (startLocation != null)
                 {
                     var locationModel = new Models.Location
@@ -145,8 +177,62 @@ namespace LP2MVCWithAuth.Controllers
                     tarefaModel.PontoDePartida = locationModel;
                 }
 
-                var locations = _database.Location.Where(x => x.IsInitical == false).ToList();
+                var locations = _database.Location.Where(x => x.IsInitical == false && x.IdTarefa == tarefa.Id).ToList();
+
+                foreach (var item in locations)
+                {
+                    var locationModel = new Models.Location
+                    {
+                        IsInitical = false,
+                        Latitude = item.Latitude,
+                        Longitude = item.Longitude,
+                        Id = item.Id,
+                    };
+
+                    locationsModel.Add(locationModel);
+                }
+
+                if (locationsModel.Count() > 0)
+                {
+                    tarefaModel.Locations = locationsModel;
+                }
+
+                return View(tarefaModel);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Rotas(int id)
+        {
+            var tarefa = _database.ListaDeTarefas.FirstOrDefault(x => x.Id == id);
+
+            if (tarefa != null)
+            {
+                var tarefaModel = new ListaTarefas
+                {
+                    DataEntrega = tarefa.DataEntrega,
+                    Titulo = tarefa.Titulo,
+                    Descricao = tarefa.Descricao,
+                    Id = tarefa.Id,
+                };
+
                 var locationsModel = new List<Models.Location>();
+                var startLocation = _database.Location.Where(x => x.IsInitical == true && x.IdTarefa == tarefa.Id).FirstOrDefault();
+                if (startLocation != null)
+                {
+                    var locationModel = new Models.Location
+                    {
+                        IsInitical = true,
+                        Latitude = startLocation.Latitude,
+                        Longitude = startLocation.Longitude,
+                        Id = startLocation.Id,
+                    };
+
+                    tarefaModel.PontoDePartida = locationModel;
+                }
+
+                var locations = _database.Location.Where(x => x.IsInitical == false && x.IdTarefa == tarefa.Id).ToList();
 
                 foreach (var item in locations)
                 {
@@ -190,47 +276,94 @@ namespace LP2MVCWithAuth.Controllers
             return View(listaTarefas);
         }
 
+        [HttpGet]
+        public IActionResult EditLocation(int id)
+        {
+            var location = _database.Location.Where(x => x.Id == id).FirstOrDefault();
+
+            if (location != null)
+            {
+                var locationModel = new Models.Location
+                {
+                    IsInitical = true,
+                    Latitude = location.Latitude,
+                    Longitude = location.Longitude,
+                    Id = location.Id,
+                    IdTarefa = location.IdTarefa,
+                };
+
+                return View(locationModel);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult EditLocation(Models.Location location)
+        {
+            Data.Models.Location locationToUpdate = new Data.Models.Location
+            {
+                Id = location.Id,
+                IdTarefa = location.IdTarefa,
+                Latitude = location.Latitude,
+                IsInitical = location.IsInitical,
+                Longitude = location.Longitude,
+            };
+
+            _database.Location.Update(locationToUpdate);
+            _database.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteLocation(int locationId)
+        {
+            var location = _database.Location.Where(x => x.Id == locationId).FirstOrDefault();
+            if (location != null)
+            {
+                _database.Location.Remove(location);
+                _database.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        [HttpGet]
+        public IActionResult AddLocationByTarefa(int id)
+        {
+            var tarefa = _database.ListaDeTarefas.Where(x => x.Id == id).FirstOrDefault();
+            var tarefaModel = new ListaTarefas();
+            if (tarefa != null)
+            {
+                tarefaModel = new ListaTarefas
+                {
+                    DataEntrega = tarefa.DataEntrega,
+                    Titulo = tarefa.Titulo,
+                    Descricao = tarefa.Descricao,
+                    Id = tarefa.Id,
+                };
+            }
+
+            return View(tarefaModel);
+        }
+
         [HttpPost]
         public IActionResult AddLocationByTarefa(Models.Location location)
         {
             Data.Models.Location locationToBeAdded = new Data.Models.Location
             {
-                City = location.City,
                 Latitude = location.Latitude,
                 Longitude = location.Longitude,
                 IdTarefa = location.IdTarefa,
-                IsInitical = location.IsInitical,
-                Country = location.Country,
-                HouseNumber = location.HouseNumber,
-                Id = location.Id,
-                Postcode = location.Postcode,
-                State = location.State,
-                StreetName = location.StreetName,
+                IsInitical = false,
             };
 
             _database.Location.Add(locationToBeAdded);
             _database.SaveChanges();
 
-            var tarefas = _database.ListaDeTarefas.ToList().Where(x => x.DataEntrega > DateTime.UtcNow).OrderBy(x => x.DataEntrega);
-            ListaTarefas listaTarefas = new ListaTarefas();
-
-            if (tarefas.Count() > 0)
-            {
-                foreach (var item in tarefas)
-                {
-                    ListaTarefas tarefaa = new ListaTarefas
-                    {
-                        DataEntrega = item.DataEntrega,
-                        Descricao = item.Descricao,
-                        Titulo = item.Titulo,
-                        Id = item.Id,
-                    };
-
-                    listaTarefas.Tarefas.Add(tarefaa);
-                }
-            }
-
-            return View(listaTarefas);
+            return Ok();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

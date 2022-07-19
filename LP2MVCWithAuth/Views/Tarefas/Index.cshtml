@@ -8,8 +8,12 @@
 }
 <link rel="stylesheet" href="app.css" type="text/css" />
 
-<a asp-controller="Tarefas" asp-action="Add">Criar nova tarefa</a>
+<h2>
+    <a asp-controller="Tarefas" asp-action="Add">Criar nova tarefa</a>
+</h2>
 <br />
+<br />
+
 
 <div class="container">
     @if (Model.Tarefas.Count() > 0)
@@ -23,7 +27,10 @@
                         <th scope="col">Descrição</th>
                         <th scope="col">Data</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Edit</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Rotas</th>
+                        <th scope="col">Deletar</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +42,9 @@
                             <td>@item.Descricao</td>
                             <td>@item.DataEntrega.ToString("dd/MM/yyyy HH:mm:ss")</td>
                             <td>@(item.DataEntrega < DateTime.UtcNow ? "Atrasado" : "A ser feito")</td>
-                            <td> <a asp-controller="Tarefas" asp-action="edit" asp-route-id="@item.Id"> Edit</a>  </td>
+                            <td> <a asp-controller="Tarefas" asp-action="edit" asp-route-id="@item.Id"> Editar</a>  </td>
+                            <td> <a asp-controller="Tarefas" asp-action="rotas" asp-route-id="@item.Id"> Rotas</a>  </td>
+                            <td> <a asp-controller="Tarefas" asp-action="Delete" asp-route-id="@item.Id"> Deletar</a>  </td>
                         </tr>
                     }
                 </tbody>

@@ -25,40 +25,15 @@
         <h2>Criar uma nova tarefa.</h2>
         <hr />
 
+        <input id="idtarefa" value="@Model.Id" hidden />
+
         <div>
-            <h3>Posição de partida:</h3>
+            <h3>Ponto de encontros:</h3>
             <div id="mapInitial" class="map"></div>
             <br>
             <button id="confirmPositionInitial">Confirm Position</button>
+            <button id="SaveLocations">Save Position</button>
             <br>
-        </div>
-
-        <br />
-
-        <div>
-            <form asp-controller="Tarefas" asp-action="Add" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-floating">
-                    <input asp-for="Titulo" class="form-control" aria-required="true" />
-                    <label asp-for="Titulo"></label>
-                    <span asp-validation-for="Titulo" class="text-danger"></span>
-                </div>
-                <br>
-                <div class="form-floating">
-                    <input asp-for="Descricao" class="form-control" aria-required="true" />
-                    <label asp-for="Descricao"></label>
-                    <span asp-validation-for="Descricao" class="text-danger"></span>
-                </div>
-                <br>
-                <div class="form-floating">
-                    <input class="form-control" asp-for="DataEntrega" />
-                </div>
-                <br>
-                <input id="PartidaLatitude" asp-for="PontoDePartida.Latitude" hidden />
-                <input id="PartidaLongitude" asp-for="PontoDePartida.Longitude" hidden />
-
-                <button type="submit" class="w-100 btn btn-lg btn-primary">Criar Tarefa</button>
-            </form>
         </div>
 
         <br />
@@ -67,6 +42,7 @@
             // Get element references
             var locations = [];
             var confirmBtnInitial = document.getElementById('confirmPositionInitial');
+            var saveLocations = document.getElementById('SaveLocations');
 
             // Initialize locationPicker plugin
             var lpInitial = new locationPicker('mapInitial', {
@@ -79,14 +55,43 @@
             confirmBtnInitial.onclick = function() {
                 // Get current location and show it in HTML
                 var location = lpInitial.getMarkerPosition();
-                document.getElementById("PartidaLatitude").value = location.lat;
-                document.getElementById("PartidaLongitude").value = location.lng;
+
+                let locationModel = {
+                    "Longitude": location.lat,
+                    "Latitude": location.lng,
+                }
+
+                locations.push(locationModel);
             };
 
+            saveLocations.onclick = function() {
+                locations.forEach(addLocationByTarefa);
+            }
+
+            function addLocationByTarefa(item) {
+                var tarefaId = document.getElementById('idtarefa').value;
+                let locationModel = {
+                    "Latitude": item.Latitude,
+                    "Longitude": item.Longitude,
+                    "IdTarefa": tarefaId,
+                }
+
+                $.post("/Tarefas/AddLocationByTarefa", locationModel)
+                    .done(function() {
+                        alert("Localização Adicionada");
+                    })
+                    .fail(function() {
+                        alert("error");
+                    })
+                    .always(function() {
+                        console.log("finished");
+                    });
+            }
+
             // Listen to map idle event, listening to idle event more accurate than listening to ondrag event
-            google.maps.event.addListener(lp.mapInitial, 'idle', function(event) {
+            google.maps.event.addListener(lpInitial.mapInitial, 'idle', function(event) {
                 // Get current location and show it in HTML
-                var location = lp.getMarkerPosition();
+                var location = lpInitial.getMarkerPosition();
             });
         </script>
     }
