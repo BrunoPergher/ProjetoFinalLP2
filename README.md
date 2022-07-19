@@ -1,3 +1,2 @@
-# SimpleMVCWebSite
-For a assignment for college i create using the .net a website using MVC 
-This is a simple assignmante for college
+# Projeto Final
+Projeto final da matéria de linguagem de programação 2
